@@ -25,9 +25,11 @@
  import ElementUI from 'element-ui'
  import 'element-ui/lib/theme-chalk/index.css';
  import axios from 'axios'
- 
+ import router from '@/router';
+
  Vue.use(ElementUI)
  Vue.prototype.$axios = axios
+
  
  export default {
    name: 'Login',
@@ -49,29 +51,32 @@
    },
    methods: {
      login() {
+      
        this.$refs.loginForm.validate((valid) => {
          if (valid) {
            axios.defaults.withCredentials = true;
-           axios.post("http://10.201.57.88:8080/login",{
+           axios.post("http://127.0.0.1:8080/login",{
              userName:this.loginForm.username,
              password:this.loginForm.password
            },{
              headers:{
                'content-type': 'application/json',
-               'Access-Control-Allow-Origin': 'http://10.201.57.88:8080'
+               'Access-Control-Allow-Origin': 'http://127.0.0.1:8080'
              },
              transformResponse: [(data) => {
                 return JSON.parse(data);
               }]
            }).then(response=>{
               console.log("返回结果:"+response)
-              if(response.data['code']==200)
-                 this.showToast("登陆成功")
+              if(response.data['code']==200){
+                 this.showToast("登陆成功");  
+                 this.$router.push(name = 'patcherInfos')
+              }
               else{
                  this.showToast("登陆失败")
               }
            }).catch(error=>{
-                 this.showToast("登陆失败")
+                // this.showToast("登陆失败")
            })
            console.log(this.loginForm)
          } else {
