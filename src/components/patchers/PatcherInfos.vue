@@ -1,23 +1,37 @@
 <template>
-    <div>
-      <h1>My List</h1>
-      <el-table :data="myList">
-        <el-table-column label="Name" prop="name"></el-table-column>
-        <el-table-column label="Age" prop="age"></el-table-column>
-        <el-table-column label="Gender" prop="gender"></el-table-column>
-      </el-table>
-    </div>
-  </template>
+  <div>
+    <el-container >
+      <el-aside width="200px">
+        <AppVersion></AppVersion>
+      </el-aside>
+
+      <el-main>
+        <el-container style="height:fit-content;">
+          <el-header style="height:fit-content;">
+            <el-button class="button_add">新增</el-button>
+          </el-header>
+          <el-main>
+           <AppDetail></AppDetail>
+          </el-main>
+        </el-container>
+      </el-main>
+    </el-container>
+  </div>
+</template>
 
    
  <script>
- import  Vue from 'vue'
- import ElementUI from 'element-ui'
- import 'element-ui/lib/theme-chalk/index.css';
+import AppVersion from './AppVersion.vue'
+import AppDetail from './AppDetail.vue';
+
 
 
  export default {
   name : 'PatcherInfos',
+  components:{
+    AppVersion,AppDetail
+  },
+
   data() {
     return {
       myList: [
@@ -33,3 +47,14 @@
 }
 
  </script>
+
+ <style>
+  .button_add{
+    width: 8ch;
+    background-color: blue;
+    color: white;
+    font-size: 1ch;
+    display: flex;
+    justify-content: center;
+  }
+</style>

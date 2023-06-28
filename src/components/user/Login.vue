@@ -50,8 +50,8 @@
      }
    },
    methods: {
+    
      login() {
-      
        this.$refs.loginForm.validate((valid) => {
          if (valid) {
            axios.defaults.withCredentials = true;
@@ -70,7 +70,7 @@
               console.log("返回结果:"+response)
               if(response.data['code']==200){
                  this.showToast("登陆成功");  
-                 this.$router.push(name = 'patcherInfos')
+                this.$router.push(name= 'patcherInfos')
               }
               else{
                  this.showToast("登陆失败")
