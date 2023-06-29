@@ -8,7 +8,7 @@
       <el-main>
         <el-container style="height:fit-content;">
           <el-header style="height:fit-content;">
-            <el-button class="button_add">新增</el-button>
+            <el-button class="button_add" @click="handleAddPatcher">新增</el-button>
           </el-header>
           <el-main>
            <AppDetail></AppDetail>
@@ -41,8 +41,11 @@ import AppDetail from './AppDetail.vue';
       ]
     }
   },
-  methods:{
 
+  methods:{
+    handleAddPatcher(){
+        this.$router.push(name = '/add/patcher')
+      }
   }
 }
 

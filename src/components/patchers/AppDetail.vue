@@ -64,7 +64,7 @@
     },
 
     featchPlugins(appVersionName){
-      axios.get('http://127.0.0.1:8080/plugins',{
+      axios.get('http://127.0.0.1:8080/plugin/list',{
         params: {
           "appVersionName":appVersionName
         }

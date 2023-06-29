@@ -25,7 +25,6 @@
  import ElementUI from 'element-ui'
  import 'element-ui/lib/theme-chalk/index.css';
  import axios from 'axios'
- import router from '@/router';
 
  Vue.use(ElementUI)
  Vue.prototype.$axios = axios
@@ -70,7 +69,7 @@
               console.log("返回结果:"+response)
               if(response.data['code']==200){
                  this.showToast("登陆成功");  
-                this.$router.push(name= 'patcherInfos')
+                this.$router.push(name= '/list/patcher')
               }
               else{
                  this.showToast("登陆失败")

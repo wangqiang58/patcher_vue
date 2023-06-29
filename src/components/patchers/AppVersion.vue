@@ -1,6 +1,6 @@
 <template>
     <el-menu v-model="selectedItem" @select="selectItem">
-      <el-menu-item v-for="item in apps" :key="item.versionId" :index="item.versionId">
+      <el-menu-item v-for="item in apps" :key="item.id" :index="item.id">
         {{ item.versionName}}
       </el-menu-item>
     </el-menu>
