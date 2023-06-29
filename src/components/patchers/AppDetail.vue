@@ -1,8 +1,8 @@
  <template>
      <div>
     <el-table :data="tableData" border>
-      <el-table-column prop="version" label="App版本"></el-table-column>
-      <el-table-column prop="flavors" label="渠道"></el-table-column>
+      <el-table-column prop="versionName" label="App版本"></el-table-column>
+      <el-table-column prop="flavor" label="渠道"></el-table-column>
       <el-table-column prop="status" label="状态"></el-table-column>
       <el-table-column prop="time" label="创建时间"></el-table-column>
       <el-table-column prop="mark" label="备注"></el-table-column>
@@ -24,41 +24,58 @@
  </template>
   
   <script>
+  import axios from 'axios';
+  import bus from './../../js/EventBus'
+
   export default {
     name:'AppDetail',
     
     data() {
       return {
         tableData: [
-        { version: '1.0.0', flavors: 'master', status: '未生效',time:'2023-06-27' },
-        { version: '1.0.0', flavors: 'master', status: '未生效' ,time:'2023-06-27'},
-        { version: '1.0.0', flavors: 'master', status: '未生效' ,time:'2023-06-27'},
-      ]
+        ]
       };
     },
+
+    mounted(){
+      bus.$on('versionName',data=> {
+         this.featchPlugins(data['versionName'])
+      })
+    },
+
     methods: {
       handleButton1(row) {
       this.showToast('发布')
-      console.log('点击按钮1', row);
     },
     handleButton2(row) {
       this.showToast('灰度')
-      console.log('点击按钮2', row);
     },
     handleButton3(row) {
       this.showToast('设备')
-      console.log('点击按钮3', row);
     },
     handleButton4(row) {
       this.showToast('撤回')
-      console.log('点击按钮4', row);
     },
 
     showToast(msg){
       this.$message({
          message:msg
        })
+    },
+
+    featchPlugins(appVersionName){
+      axios.get('http://127.0.0.1:8080/plugins',{
+        params: {
+          "appVersionName":appVersionName
+        }
+      }).then(response => {
+         this.tableData = response.data.data
+      }
+      ).catch(errror=>{
+         console.error(errror)
+      })
     }
+
     }
   }
   </script>

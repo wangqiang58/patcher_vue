@@ -8,6 +8,7 @@
   
   <script>
    import axios from 'axios'
+   import bus from './../../js/EventBus'
 
   export default {
     name:'AppVersion',
@@ -19,19 +20,26 @@
       };
     },
     mounted(){
-      console.info('获取app版本号')
+      console.info('获取app版本号列表')
       this.fetcherApps()
     },
 
     methods: {
       selectItem(item) {
         this.selectedItem = item;
+        this.sendMessage(this.apps[item-1])
       },
 
       showToast(msg){
       this.$message({
          message:msg
        })
+    },
+
+    sendMessage(versionName){
+      console.info("切换版本"+versionName)
+      bus.$emit("versionName",versionName)
+      
     },
 
     fetcherApps(){
