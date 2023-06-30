@@ -1,7 +1,7 @@
 <template>
    <div>
 
-   <el-form ref="formData" :model="formData" label-width="100px">
+   <el-form ref="uploadForm" :model="formData" label-width="100px">
     <div class="title_form_item">创建</div>
      <el-form-item label="App版本">
        <el-input v-model="formData.versionName" placeholder="必填,例如3.0.1" class="input_form_item"></el-input>
@@ -17,17 +17,19 @@
 
      <el-form-item label="补丁文件">
       <el-upload
-       action="http://127.0.0.1:8080/plugin/add"  
+       ref="upload"
+       action="http://127.0.0.1:8080/plugin/upload"
+       :headers="{
+        'Content-Type': 'multipart/form-data',
+       }"
        :before-upload="beforeUpload" 
        :on-success="handleSuccess" 
        :on-error="handleError" 
-       :http-request="uploadFile"
-       name="file"
-       :headers="{ 'Content-Type': 'multipart/form-data' }"
-        >
-      <el-button type="primary">选择文件</el-button>
-    <div slot="tip" class="el-upload__tip">只支持上传apk文件，且不超过5MB</div>
-  </el-upload>
+       :auto-upload="false"
+      >
+       <el-button type="primary">选择文件</el-button>
+       <div slot="tip" class="el-upload__tip">只支持上传apk文件，且不超过5MB</div>
+      </el-upload> 
      </el-form-item>
 
      <el-form-item label="备注" >
@@ -37,7 +39,7 @@
      </el-form-item>
 
      <el-form-item>
-       <el-button type="primary" @click="uploadFile">确认</el-button>
+       <el-button type="primary" @click="submitForm">确认</el-button>
      </el-form-item>
 
    </el-form>
@@ -53,45 +55,51 @@
       formData: {
          versionName: '',
          mark: '',
-         flavor:''
+         flavor: '默认值'
        },
-
+       uploadData: {},
      };
    },
    methods: {
      submitForm() {
-       // 校验表单，执行提交操作
-       this.$refs.form.validate(valid => {
-         if (valid) {
+      const formData = new FormData();
 
-         } else {
-           // 表单校验不通过，可以给出提示或进行其他操作
-           console.log('Form validation failed.');
-         }
-       });
+// 添加额外的参数到 FormData
+formData.append('versionName', this.formData.versionName);      
+formData.append('mark',  this.formData.mark);
+formData.append('flavor',  this.formData.flavor);
+
+const file = this.$refs.upload.uploadFiles[0];
+formData.append('file',file.raw)
+      // file.raw = formData;
+
+      axios.post('http://127.0.0.1:8080/plugin/upload',formData,{
+         headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+}).then(response=>{
+   console.info(response)
+}).catch(error=>{
+  console.error(error)
+})
      },
+
+  beforeUpload(file) {
+
+
+     
+
+       // 返回 false 以阻止自动上传
+       return false;
+},
      handleSuccess(){
       console.info('上传成功')
      },
      handleError(){
       console.info('上传失败')
      },
-
-     uploadFile(file){
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('versionName', this.formData.versionName);
-      formData.append('mark', this.formData.mark);
-      formData.append('flavor', '默认值');
-
-      return axios.post('http://127.0.0.1:8080/plugin/add', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
      }
-   }
- };
+   };
  </script>
   
 <style>
