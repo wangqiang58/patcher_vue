@@ -5,14 +5,13 @@
       <el-table-column prop="flavor" label="渠道"></el-table-column>
       <el-table-column prop="status" label="状态"></el-table-column>
       <el-table-column prop="time" label="创建时间"></el-table-column>
-      <el-table-column prop="mark" label="备注"></el-table-column>
+      <el-table-column prop="mark" label="修复描述"></el-table-column>
       <el-table-column prop="operate" label="操作" >
         <template slot-scope="scope" >
           <div class="button_container">
           <el-button @click="handleButton1(scope.row)" class="button_item" style="background-color:green; margin-left:1ch;">发布</el-button>
-          <el-button @click="handleButton2(scope.row)" class="button_item" style="background-color: grey;">灰度</el-button>
           <el-button @click="handleButton3(scope.row)" class="button_item" style="background-color: grey;">设备</el-button>
-          <el-button @click="handleButton4(scope.row)" class="button_item" style="background-color: red;">撤回</el-button>
+          <el-button @click="handleButton4(scope.row)" class="button_item" style="background-color: red;">终止</el-button>
           </div>
         </template>
       </el-table-column>
@@ -96,7 +95,7 @@
  }
 
  .button_container{
-  flex-direction: column;
+  flex-direction:row;
    display: flex;
    align-content: center;
   justify-content: center;

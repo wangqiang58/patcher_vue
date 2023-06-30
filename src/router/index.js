@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/login', name: 'login', component: Login },
   { path: '/list/patcher', name: 'patcherInfos', component: PatcherInfos },
-  { path: '/add/patcher', name: 'add/patcher', component: AddPatcher },
+  { path: '/add/patcher', name: 'addpatcher', component: AddPatcher },
 ]
 
 const router = new VueRouter({

@@ -39,7 +39,7 @@
      </el-form-item>
 
      <el-form-item>
-       <el-button type="primary" @click="submitForm">确认</el-button>
+      <el-button type="primary" @click="exitPage">取消</el-button> <el-button type="primary" @click="submitForm">确认</el-button>
      </el-form-item>
 
    </el-form>
@@ -64,41 +64,59 @@
      submitForm() {
       const formData = new FormData();
 
-// 添加额外的参数到 FormData
-formData.append('versionName', this.formData.versionName);      
-formData.append('mark',  this.formData.mark);
-formData.append('flavor',  this.formData.flavor);
+      // 添加额外的参数到 FormData
+      formData.append('versionName', this.formData.versionName);      
+      formData.append('mark',  this.formData.mark);
+      formData.append('flavor',  this.formData.flavor);
 
-const file = this.$refs.upload.uploadFiles[0];
-formData.append('file',file.raw)
-      // file.raw = formData;
+      const file = this.$refs.upload.uploadFiles[0];
+      formData.append('file',file.raw)
+         
 
       axios.post('http://127.0.0.1:8080/plugin/upload',formData,{
          headers: {
-    'Content-Type': 'multipart/form-data',
-  },
+           'Content-Type': 'multipart/form-data',
+         },
 }).then(response=>{
    console.info(response)
+   this.$router.go(-1)
+   this.$message({
+         message:"上传成功"
+       })
 }).catch(error=>{
   console.error(error)
+  this.$message({
+         message:"上传失败"
+       })
 })
      },
 
-  beforeUpload(file) {
+   showConfirm() {
+      this.$confirm('确定需要发布吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 用户点击了确定按钮的回调
+       submitForm()
+      }).catch(() => {
+         console.info('异常处理')
+      });
+    },
+   },
 
+   exitPage(){
+      this.$router.go(-1)
+   },
 
-     
-
-       // 返回 false 以阻止自动上传
-       return false;
-},
-     handleSuccess(){
+   handleSuccess(){
       console.info('上传成功')
-     },
-     handleError(){
+   },
+
+   handleError(){
       console.info('上传失败')
-     },
-     }
+   },
+
    };
  </script>
   

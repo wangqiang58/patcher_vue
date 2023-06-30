@@ -1,6 +1,6 @@
 <template>
-    <el-menu v-model="selectedItem" @select="selectItem">
-      <el-menu-item v-for="item in apps" :key="item.id" :index="item.id">
+    <el-menu>
+      <el-menu-item v-for=" (item, index) in apps" :key="index" @click="selectItem(index)">
         {{ item.versionName}}
       </el-menu-item>
     </el-menu>
@@ -27,7 +27,7 @@
     methods: {
       selectItem(item) {
         this.selectedItem = item;
-        this.sendMessage(this.apps[item-1])
+        this.sendMessage(this.apps[item])
       },
 
       showToast(msg){
@@ -45,7 +45,7 @@
     fetcherApps(){
       axios.get('http://127.0.0.1:8080/apps').then(response => {
          this.apps = response.data.data
-         this.selectedItem = this.apps[0]
+         this.selectItem(0)
       }
       ).catch(errror=>{
          console.error(errror)
